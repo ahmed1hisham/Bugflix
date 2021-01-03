@@ -1,5 +1,6 @@
 import React from 'react';
 import {TextInput} from 'react-native';
+import {lightGrey, red} from '../../../theme/colors';
 import {styles} from './styles';
 
 export default InputField = (props) => {

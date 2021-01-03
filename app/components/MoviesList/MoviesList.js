@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {
   View,
-  StyleSheet,
   FlatList,
   Alert,
   ActivityIndicator,
@@ -9,10 +8,11 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import {veryDarkGrey, white, red} from '../../theme/colors';
+import {white} from '../../theme/colors';
 import MovieListItem from '../shared/MovieListItem/MovieListItem';
 import axios from 'axios';
 import NetInfo from '@react-native-community/netinfo';
+import {styles} from './styles';
 
 const apiKey = 'acea91d2bff1c53e6604e4985b6989e2';
 const movieBaseUrl = `http://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&page=`;
@@ -24,13 +24,14 @@ const MoviesList = (props) => {
   const [loading, setLoading] = useState(false);
   const [fetchingMore, setFetchingMore] = useState(false);
   const [pageToFetch, setPageToFetch] = useState(1);
-  const [isConnected, setIsConnected] = useState(false);
+  const [isConnected, setIsConnected] = useState(true);
 
   useEffect(() => {
-    //checkConnection();
     const unsubscribe = NetInfo.addEventListener((state) => {
+      if (isConnected === false && state.isConnected === true) {
+        fetchMovies();
+      }
       setIsConnected(state.isConnected);
-      console.log('changed to: ' + state.isConnected);
     });
     fetchMovies();
 
@@ -141,6 +142,7 @@ const MoviesList = (props) => {
           onEndReached={fetchMoreMovies}
           onEndReachedThreshold={0.1}
           ListFooterComponent={renderFooter}
+          nestedScrollEnabled={true}
         />
       ) : (
         <ScrollView
@@ -155,39 +157,4 @@ const MoviesList = (props) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: veryDarkGrey,
-    alignItems: 'center',
-  },
-  activityIndicatorContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  moreActivityIndicator: {
-    marginTop: 20,
-  },
-  emptyMoviesView: {
-    flex: 1,
-    height: '100%',
-    width: '100%',
-    paddingTop: 50,
-    paddingHorizontal: 15,
-  },
-  emptyMoviesText: {
-    width: '80%',
-    fontSize: 20,
-    color: white,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  refreshContainer: {
-    marginTop: 10,
-    padding: 15,
-    backgroundColor: red,
-    borderRadius: 10,
-  },
-});
 export default React.memo(MoviesList);

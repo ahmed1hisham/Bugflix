@@ -4,6 +4,7 @@ import DatePicker from 'react-native-date-picker';
 import Modal from 'react-native-modal';
 import {format} from 'date-fns';
 import {styles} from './styles';
+import {veryDarkGrey, white} from '../../../theme/colors';
 
 const {width, height} = Dimensions.get('window');
 

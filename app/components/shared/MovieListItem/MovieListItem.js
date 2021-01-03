@@ -24,9 +24,14 @@ const MovieListItem = (props) => {
       </View>
       <View style={styles.infoContainer}>
         <Text style={styles.titleStyle}>{movie.title}</Text>
-        <Text style={styles.dateStyle}>Release Date: {movie.release_date}</Text>
-        <ScrollView>
-          <Text style={styles.overviewStyle}>{movie.overview}</Text>
+        <Text style={styles.dateStyle}>
+          Release Date:{' '}
+          {movie.release_date !== '' ? movie.release_date : 'Unknown'}
+        </Text>
+        <ScrollView nestedScrollEnabled={true}>
+          <Text style={styles.overviewStyle}>
+            {movie.overview !== '' ? movie.overview : 'No overview to show'}
+          </Text>
         </ScrollView>
       </View>
     </View>

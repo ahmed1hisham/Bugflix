@@ -1,26 +1,19 @@
-import React, {Component, useState, useEffect} from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  View,
-  Dimensions,
-  Text,
-  Alert,
-} from 'react-native';
-import {veryDarkGrey, red, white} from '../theme/colors';
-import BugflixTitle from '../components/shared/BugflixTitle/BugflixTitle';
+import React, {useState, useEffect} from 'react';
+import {SafeAreaView, StyleSheet, View, Dimensions, Text} from 'react-native';
+import {veryDarkGrey, red, white} from '../../theme/colors';
+import BugflixTitle from '../../components/shared/BugflixTitle/BugflixTitle';
 import {TabView, TabBar} from 'react-native-tab-view';
-import MoviesList from '../components/MoviesList/MoviesList';
-import MyMoviesList from '../components/MyMoviesList/MyMoviesList';
+import MoviesList from '../../components/MoviesList/MoviesList';
+import MyMoviesList from '../../components/MyMoviesList/MyMoviesList';
 import FAB from 'react-native-fab';
-import AddMovieModal from '../components/AddMovieModal/AddMovieModal';
-import OfflineMessage from '../components/shared/OfflineMessage/OfflineMessage';
+import AddMovieModal from '../../components/AddMovieModal/AddMovieModal';
+import OfflineMessage from '../../components/shared/OfflineMessage/OfflineMessage';
 import NetInfo from '@react-native-community/netinfo';
+import {styles} from './styles';
 
 const {width, height} = Dimensions.get('window');
 
 const HomeScreen = (props) => {
-  const [index, setIndex] = useState(0);
   const [idCounter, setIdCounter] = useState(1);
   const [addMovieVisible, setAddMoviesVisible] = useState(false);
   const [myMovies, setMyMovies] = useState([]);
@@ -42,15 +35,6 @@ const HomeScreen = (props) => {
       unsubscribe();
     };
   }, []);
-
-  const checkConnection = () => {
-    NetInfo.fetch().then((state) => {
-      setIsConnected(state.isConnected);
-      if (state.isConnected === false) {
-        Alert.alert('No Internet Connection');
-      }
-    });
-  };
 
   const addNewMovie = (movie) => {
     movie.id = idCounter;
@@ -74,6 +58,7 @@ const HomeScreen = (props) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <OfflineMessage />
       <BugflixTitle />
       <TabView
         navigationState={navState}
@@ -125,14 +110,4 @@ const HomeScreen = (props) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: veryDarkGrey,
-  },
-  FABIconStyle: {
-    fontSize: 22,
-    fontWeight: 'bold',
-  },
-});
 export default HomeScreen;

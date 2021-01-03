@@ -20,10 +20,10 @@ export const styles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 6,
     overflow: 'hidden',
-    height: 200,
+    height: width > 360 ? 200 : 180,
   },
   titleStyle: {
-    fontSize: 24,
+    fontSize: width > 360 ? 24 : 20,
     color: white,
     fontWeight: 'bold',
     marginBottom: 5,
@@ -41,9 +41,13 @@ export const styles = StyleSheet.create({
   },
   imageContainerStyle: {
     flex: 2,
-    width: 135,
+    width: width > 360 ? 135 : 120,
     height: '100%',
   },
-  imageStyle: {width: 135, height: '100%', resizeMode: 'contain'},
+  imageStyle: {
+    width: width > 360 ? 135 : 120,
+    height: '100%',
+    resizeMode: 'contain',
+  },
   infoContainer: {padding: 10, flex: 3},
 });
