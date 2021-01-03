@@ -7,11 +7,11 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
+  RefreshControl,
 } from 'react-native';
 import {white} from '../../theme/colors';
 import MovieListItem from '../shared/MovieListItem/MovieListItem';
 import axios from 'axios';
-import NetInfo from '@react-native-community/netinfo';
 import {styles} from './styles';
 
 const apiKey = 'acea91d2bff1c53e6604e4985b6989e2';
@@ -24,45 +24,36 @@ const MoviesList = (props) => {
   const [loading, setLoading] = useState(false);
   const [fetchingMore, setFetchingMore] = useState(false);
   const [pageToFetch, setPageToFetch] = useState(1);
-  const [isConnected, setIsConnected] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = NetInfo.addEventListener((state) => {
-      if (isConnected === false && state.isConnected === true) {
-        fetchMovies();
-      }
-      setIsConnected(state.isConnected);
-    });
     fetchMovies();
-
-    return () => {
-      unsubscribe();
-    };
   }, []);
 
   const fetchMovies = async () => {
     setLoading(true);
-    try {
-      await NetInfo.fetch().then(async (state) => {
-        if (state.isConnected === true) {
-          setIsConnected(true);
-          await axios
-            .get(initialUrl)
-            .then((response) => {
-              setMovies(response.data.results);
-            })
-            .catch((error) => {
-              Alert.alert(error);
-            });
-        } else {
-          setIsConnected(false);
-          Alert.alert('No Internet Connection');
-        }
-      });
-    } catch (error) {
-      Alert.alert(error);
-    }
+    await moviesApiCall();
     setLoading(false);
+  };
+
+  onRefresh = async () => {
+    setRefreshing(true);
+    await moviesApiCall();
+    setRefreshing(false);
+  };
+
+  moviesApiCall = async () => {
+    if (props.isConnected === true) {
+      await axios
+        .get(initialUrl)
+        .then((response) => {
+          setMovies(response.data.results);
+        })
+        .catch((error) => {
+          Alert.alert(error);
+        });
+    } else {
+      Alert.alert('No Internet Connection');
+    }
   };
 
   const fetchMoreMovies = async () => {
@@ -70,23 +61,19 @@ const MoviesList = (props) => {
       setFetchingMore(true);
       let newPage = pageToFetch + 1;
       try {
-        await NetInfo.fetch().then(async (state) => {
-          if (state.isConnected === true) {
-            setIsConnected(true);
-            await axios
-              .get(movieBaseUrl + newPage)
-              .then((response) => {
-                let newMovies = movies.concat(response.data.results);
-                setMovies(newMovies);
-              })
-              .catch((error) => {
-                Alert.alert(error);
-              });
-          } else {
-            setIsConnected(false);
-            Alert.alert('No Internet Connection');
-          }
-        });
+        if (props.isConnected === true) {
+          await axios
+            .get(movieBaseUrl + newPage)
+            .then((response) => {
+              let newMovies = movies.concat(response.data.results);
+              setMovies(newMovies);
+            })
+            .catch((error) => {
+              Alert.alert(error);
+            });
+        } else {
+          Alert.alert('No Internet Connection');
+        }
       } catch (error) {
         Alert.alert(error);
       }
@@ -109,9 +96,11 @@ const MoviesList = (props) => {
     }
   };
 
+  const renderItem = ({item}) => <MovieListItem movie={item} />;
+
   return (
     <View style={styles.container}>
-      {isConnected === false ? (
+      {props.isConnected !== true ? (
         <ScrollView
           style={styles.emptyMoviesView}
           contentContainerStyle={{alignItems: 'center'}}>
@@ -134,8 +123,14 @@ const MoviesList = (props) => {
           data={movies}
           scrollEnabled={true}
           showsVerticalScrollIndicator={false}
-          refreshing={refreshing}
-          renderItem={({item}) => <MovieListItem movie={item} />}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              tintColor="#fff"
+            />
+          }
+          renderItem={renderItem}
           keyExtractor={(item) => {
             return item.id.toString() + pageToFetch.toString();
           }}
@@ -151,6 +146,11 @@ const MoviesList = (props) => {
           <Text style={styles.emptyMoviesText}>
             No movies to show right now, come back later ;)
           </Text>
+          <TouchableOpacity
+            onPress={fetchMovies}
+            style={styles.refreshContainer}>
+            <Text style={styles.emptyMoviesText}>Refresh</Text>
+          </TouchableOpacity>
         </ScrollView>
       )}
     </View>

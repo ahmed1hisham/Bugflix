@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {SafeAreaView, StyleSheet, View, Dimensions, Text} from 'react-native';
+import React, {useState} from 'react';
+import {SafeAreaView, View, Dimensions, Text} from 'react-native';
 import {veryDarkGrey, red, white} from '../../theme/colors';
 import BugflixTitle from '../../components/shared/BugflixTitle/BugflixTitle';
 import {TabView, TabBar} from 'react-native-tab-view';
@@ -8,16 +8,16 @@ import MyMoviesList from '../../components/MyMoviesList/MyMoviesList';
 import FAB from 'react-native-fab';
 import AddMovieModal from '../../components/AddMovieModal/AddMovieModal';
 import OfflineMessage from '../../components/shared/OfflineMessage/OfflineMessage';
-import NetInfo from '@react-native-community/netinfo';
 import {styles} from './styles';
+import {useNetworkSubscription} from '../../hooks/useNetworkSubscription';
 
 const {width, height} = Dimensions.get('window');
 
 const HomeScreen = (props) => {
+  const [isConnected, setIsConnected] = useNetworkSubscription(true);
   const [idCounter, setIdCounter] = useState(1);
   const [addMovieVisible, setAddMoviesVisible] = useState(false);
   const [myMovies, setMyMovies] = useState([]);
-  const [isConnected, setIsConnected] = useState(true);
   const [navState, setNavState] = useState({
     index: 0,
     routes: [
@@ -25,16 +25,6 @@ const HomeScreen = (props) => {
       {key: 'myMovies', title: 'My Movies'},
     ],
   });
-
-  useEffect(() => {
-    const unsubscribe = NetInfo.addEventListener((state) => {
-      setIsConnected(state.isConnected);
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
 
   const addNewMovie = (movie) => {
     movie.id = idCounter;
@@ -48,7 +38,7 @@ const HomeScreen = (props) => {
   const renderScene = ({route}) => {
     switch (route.key) {
       case 'movies':
-        return <MoviesList />;
+        return <MoviesList isConnected={isConnected} />;
       case 'myMovies':
         return <MyMoviesList movies={myMovies} />;
       default:
@@ -58,7 +48,7 @@ const HomeScreen = (props) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <OfflineMessage />
+      <OfflineMessage isConnected={isConnected} />
       <BugflixTitle />
       <TabView
         navigationState={navState}

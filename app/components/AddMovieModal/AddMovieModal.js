@@ -34,10 +34,7 @@ export default AddMovieModal = (props) => {
     movie.release_date = selectedDate;
     props.onClose();
     props.addNewMovie(movie);
-    setMovieTitle(null);
-    setSelectedDate(null);
-    setMovieDescription(null);
-    setImageUri(null);
+    resetModal();
   };
 
   const chooseFile = () => {
@@ -60,6 +57,13 @@ export default AddMovieModal = (props) => {
     });
   };
 
+  const resetModal = () => {
+    setMovieTitle(null);
+    setSelectedDate(null);
+    setMovieDescription(null);
+    setImageUri(null);
+  };
+
   const enabled =
     movieTitle !== '' &&
     movieDescription !== '' &&
@@ -71,7 +75,10 @@ export default AddMovieModal = (props) => {
     <View>
       <Modal
         isVisible={props.isVisible}
-        onBackdropPress={props.onClose}
+        onBackdropPress={() => {
+          props.onClose();
+          resetModal();
+        }}
         style={styles.modalBoxStyle}
         deviceHeight={height}
         deviceWidth={width}>
@@ -79,7 +86,11 @@ export default AddMovieModal = (props) => {
           behavior={Platform.OS == 'ios' ? 'position' : 'height'}>
           <View style={styles.modalView}>
             <View style={styles.closeContainer}>
-              <TouchableOpacity onPress={props.onClose}>
+              <TouchableOpacity
+                onPress={() => {
+                  props.onClose();
+                  resetModal();
+                }}>
                 <Icon name="close" size={22} color={white}></Icon>
               </TouchableOpacity>
             </View>
