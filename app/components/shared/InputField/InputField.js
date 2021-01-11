@@ -7,6 +7,7 @@ export default InputField = (props) => {
   return (
     <TextInput
       {...props}
+      testID={props.testID}
       style={[
         styles.inputStyle,
         props.style ? props.style : {},

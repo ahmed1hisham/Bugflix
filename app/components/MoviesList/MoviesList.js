@@ -85,21 +85,26 @@ const MoviesList = (props) => {
   const renderFooter = () => {
     if (fetchingMore === true) {
       return (
-        <ActivityIndicator
-          style={styles.moreActivityIndicator}
-          color={white}
-          size="large"
-        />
+        <View testID="fetchingMoreIndicator">
+          <ActivityIndicator
+            testID="fetchingMoreIndicator"
+            style={styles.moreActivityIndicator}
+            color={white}
+            size="large"
+          />
+        </View>
       );
     } else {
       return null;
     }
   };
 
-  const renderItem = ({item}) => <MovieListItem movie={item} />;
+  const renderItem = ({item}) => (
+    <MovieListItem testID="movieListItem" movie={item} />
+  );
 
   return (
-    <View style={styles.container}>
+    <View testID="allMoviesListContainer" style={styles.container}>
       {props.isConnected !== true ? (
         <ScrollView
           style={styles.emptyMoviesView}
@@ -117,6 +122,7 @@ const MoviesList = (props) => {
         </View>
       ) : movies.length > 0 ? (
         <FlatList
+          testID="listOfMovies"
           style={{flex: 1}}
           style={{paddingTop: 7.5}}
           contentContainerStyle={{paddingBottom: 15}}
@@ -135,7 +141,7 @@ const MoviesList = (props) => {
             return item.id.toString() + pageToFetch.toString();
           }}
           onEndReached={fetchMoreMovies}
-          onEndReachedThreshold={0.1}
+          onEndReachedThreshold={0.001}
           ListFooterComponent={renderFooter}
           nestedScrollEnabled={true}
         />

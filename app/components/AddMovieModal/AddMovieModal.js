@@ -72,8 +72,9 @@ export default AddMovieModal = (props) => {
     selectedDate !== null;
 
   return (
-    <View>
+    <View testID={props.testID}>
       <Modal
+        testID={props.testID}
         isVisible={props.isVisible}
         onBackdropPress={() => {
           props.onClose();
@@ -84,7 +85,7 @@ export default AddMovieModal = (props) => {
         deviceWidth={width}>
         <KeyboardAvoidingView
           behavior={Platform.OS == 'ios' ? 'position' : 'height'}>
-          <View style={styles.modalView}>
+          <View testID={props.testID} style={styles.modalView}>
             <View style={styles.closeContainer}>
               <TouchableOpacity
                 onPress={() => {
@@ -114,6 +115,7 @@ export default AddMovieModal = (props) => {
                 </View>
               </TouchableOpacity>
               <InputField
+                testID="movieTitle"
                 value={movieTitle}
                 onChangeText={setMovieTitle}
                 placeholder="Movie Title"
@@ -126,6 +128,7 @@ export default AddMovieModal = (props) => {
                   setDatePickerVisibility(true);
                 }}>
                 <Text
+                  testID="datePicker"
                   style={[
                     styles.dateFieldText,
                     selectedDate === null ? {color: lightGrey} : {color: white},
@@ -134,6 +137,7 @@ export default AddMovieModal = (props) => {
                 </Text>
               </TouchableOpacity>
               <InputField
+                testID="overview"
                 value={movieDescription}
                 onChangeText={setMovieDescription}
                 placeholder="Description"
@@ -151,7 +155,9 @@ export default AddMovieModal = (props) => {
                   },
                 ]}
                 onPress={enabled ? submitMovie : () => {}}>
-                <Text style={styles.saveText}>Save</Text>
+                <Text testID="submitMovie" style={styles.saveText}>
+                  Save
+                </Text>
               </TouchableOpacity>
             </View>
           </View>

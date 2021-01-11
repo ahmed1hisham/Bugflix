@@ -11,7 +11,7 @@ const {width, height} = Dimensions.get('window');
 export default DatePickerModal = (props) => {
   const [date, setDate] = useState(new Date());
   return (
-    <View>
+    <View testID="datePickerModal">
       <Modal
         isVisible={props.isVisible}
         onBackdropPress={() => {
@@ -31,6 +31,7 @@ export default DatePickerModal = (props) => {
           />
           <View style={styles.doneButtonContainer}>
             <Text
+              testID="pickingDateDone"
               style={styles.doneButtonText}
               onPress={() => {
                 props.onConfirm(format(date, 'MMM do ,yyyy'));

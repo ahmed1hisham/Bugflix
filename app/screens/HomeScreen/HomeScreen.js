@@ -21,8 +21,8 @@ const HomeScreen = (props) => {
   const [navState, setNavState] = useState({
     index: 0,
     routes: [
-      {key: 'movies', title: 'All Movies'},
-      {key: 'myMovies', title: 'My Movies'},
+      {key: 'movies', title: 'All Movies', testID: 'allMoviesTabButton'},
+      {key: 'myMovies', title: 'My Movies', testID: 'myMoviesTabButton'},
     ],
   });
 
@@ -38,19 +38,20 @@ const HomeScreen = (props) => {
   const renderScene = ({route}) => {
     switch (route.key) {
       case 'movies':
-        return <MoviesList isConnected={isConnected} />;
+        return <MoviesList testID="allMoviesList" isConnected={isConnected} />;
       case 'myMovies':
-        return <MyMoviesList movies={myMovies} />;
+        return <MyMoviesList testID="myMoviesList" movies={myMovies} />;
       default:
         return null;
     }
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView testID="homeScreenContainer" style={styles.container}>
       <OfflineMessage isConnected={isConnected} />
-      <BugflixTitle />
+      <BugflixTitle testID="logoTitle" />
       <TabView
+        testID="tabViewContainer"
         navigationState={navState}
         renderScene={renderScene}
         onIndexChange={(index) => {
@@ -58,7 +59,7 @@ const HomeScreen = (props) => {
         }}
         initialLayout={width}
         renderTabBar={(props) => (
-          <View style={{alignItems: 'center'}}>
+          <View testID="tabBar" style={{alignItems: 'center'}}>
             <TabBar
               {...props}
               style={{
@@ -87,9 +88,14 @@ const HomeScreen = (props) => {
           setAddMoviesVisible(true);
         }}
         visible={true}
-        iconTextComponent={<Text style={styles.FABIconStyle}>+</Text>}
+        iconTextComponent={
+          <Text testID="actionButton" style={styles.FABIconStyle}>
+            +
+          </Text>
+        }
       />
       <AddMovieModal
+        testID="addMovieModal"
         isVisible={addMovieVisible}
         onClose={() => {
           setAddMoviesVisible(false);

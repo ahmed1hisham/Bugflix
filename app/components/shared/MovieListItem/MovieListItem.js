@@ -9,7 +9,7 @@ const imageFetchSize = 'w342';
 const MovieListItem = (props) => {
   const {movie} = props;
   return (
-    <View style={styles.movieCardContainer}>
+    <View testID="movieListItem" style={styles.movieCardContainer}>
       <View style={styles.imageContainerStyle}>
         <Image
           style={styles.imageStyle}

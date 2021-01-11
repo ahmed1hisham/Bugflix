@@ -5,6 +5,9 @@ import {veryDarkGrey} from './app/theme/colors';
 import HomeScreen from './app/screens/HomeScreen/HomeScreen';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import SplashScreen from 'react-native-splash-screen';
+import {LogBox} from 'react-native';
+
+LogBox.ignoreAllLogs();
 
 export default class App extends Component {
   componentDidMount() {
