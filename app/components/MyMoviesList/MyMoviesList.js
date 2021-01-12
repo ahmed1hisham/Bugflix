@@ -3,7 +3,7 @@ import {FlatList, View, Text, ScrollView} from 'react-native';
 import MovieListItem from '../shared/MovieListItem/MovieListItem';
 import {styles} from './styles';
 
-export default MyMoviesList = (props) => {
+const MyMoviesList = (props) => {
   return (
     <View testID="myMoviesListContainer" style={styles.container}>
       {props.movies.length > 0 ? (
@@ -35,3 +35,5 @@ export default MyMoviesList = (props) => {
     </View>
   );
 };
+
+export default MyMoviesList;

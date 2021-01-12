@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Image} from 'react-native';
 import {styles} from './styles';
 
-export default BugflixTitle = (props) => {
+const BugflixTitle = (props) => {
   return (
     <View style={styles.container}>
       <Image
@@ -12,3 +12,5 @@ export default BugflixTitle = (props) => {
     </View>
   );
 };
+
+export default BugflixTitle;

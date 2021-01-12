@@ -8,7 +8,7 @@ import {veryDarkGrey, white} from '../../../theme/colors';
 
 const {width, height} = Dimensions.get('window');
 
-export default DatePickerModal = (props) => {
+const DatePickerModal = (props) => {
   const [date, setDate] = useState(new Date());
   return (
     <View testID="datePickerModal">
@@ -44,3 +44,5 @@ export default DatePickerModal = (props) => {
     </View>
   );
 };
+
+export default DatePickerModal;

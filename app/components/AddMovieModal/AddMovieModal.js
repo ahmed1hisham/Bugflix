@@ -18,7 +18,7 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import {styles} from './styles';
 
 const {width, height} = Dimensions.get('window');
-export default AddMovieModal = (props) => {
+const AddMovieModal = (props) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [movieDescription, setMovieDescription] = useState(null);
   const [movieTitle, setMovieTitle] = useState(null);
@@ -92,7 +92,7 @@ export default AddMovieModal = (props) => {
                   props.onClose();
                   resetModal();
                 }}>
-                <Icon name="close" size={22} color={white}></Icon>
+                {/* <Icon name="close" size={22} color={white} /> */}
               </TouchableOpacity>
             </View>
             <Text style={styles.titleStyle}>Enter Movie Details</Text>
@@ -176,3 +176,4 @@ export default AddMovieModal = (props) => {
     </View>
   );
 };
+export default AddMovieModal;

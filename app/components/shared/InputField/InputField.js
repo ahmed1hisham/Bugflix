@@ -3,7 +3,7 @@ import {TextInput} from 'react-native';
 import {lightGrey, red} from '../../../theme/colors';
 import {styles} from './styles';
 
-export default InputField = (props) => {
+const InputField = (props) => {
   return (
     <TextInput
       {...props}
@@ -21,3 +21,4 @@ export default InputField = (props) => {
     />
   );
 };
+export default InputField;
