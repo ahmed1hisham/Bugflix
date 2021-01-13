@@ -24,3 +24,9 @@
 
 - Make sure you ran `npm install`.
 - Run the following command `npm run test`.
+
+
+
+
+**Jest testing files can be found in `<rootDir>/__tests__` directory. <br />
+Detox tesing files can be found in `<rootDir>/e2e` directory.**
