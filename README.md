@@ -18,6 +18,7 @@
 - Run the App either on ios or android using the above commands.
 - According to the platform you chose, run one of these commands for detox build: `detox build -c ios` for ios or `detox build -c androidOnMac` for android on a mac and `detox build -c androidOnWindows` for android on Windows.
 - Then this command to finally run the tests:  `detox test -c ios` for ios or `detox test -c androidOnMac` for android on a mac and `detox test -c androidOnWindows` for android on Windows.
+- For Android make sure you use an emulator named: `Pixel_3_API_29`. If not then you'll need to change the emulator name in the `.detoxrc.json` file.
 
 
 #### Jest unit testing:
