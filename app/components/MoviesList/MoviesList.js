@@ -35,13 +35,13 @@ const MoviesList = (props) => {
     setLoading(false);
   };
 
-  onRefresh = async () => {
+  const onRefresh = async () => {
     setRefreshing(true);
     await moviesApiCall();
     setRefreshing(false);
   };
 
-  moviesApiCall = async () => {
+  const moviesApiCall = async () => {
     if (props.isConnected === true) {
       await axios
         .get(initialUrl)

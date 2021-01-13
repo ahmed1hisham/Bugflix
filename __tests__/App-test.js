@@ -1,19 +1,54 @@
-/**
- * @format
- */
-
 import 'react-native';
-import React from 'react';
+import React, {useState as useStateMock} from 'react';
 import App from '../App';
-
-// Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
+import HomeScreen from '../app/screens/HomeScreen/HomeScreen';
+import {shallow} from 'enzyme';
+import MoviesList from '../app/components/MoviesList/MoviesList';
+import MyMoviesList from '../app/components/MyMoviesList/MyMoviesList';
+import MovieListItem from '../app/components/shared/MovieListItem/MovieListItem';
 
-// it('renders correctly', () => {
-//   renderer.create(<App />);
-// });
+jest.useFakeTimers();
 
-it('renders correctly', () => {
+it('App renders correctly', () => {
   const tree = renderer.create(<App />).toJSON();
   expect(tree).toMatchSnapshot();
+});
+
+it('Home renders correctly', () => {
+  const component = shallow(<HomeScreen />);
+  expect(component).toMatchSnapshot();
+});
+
+it('Movies List Component renders correctly', () => {
+  const component = shallow(<MoviesList isConnected={true} />);
+  expect(component).toMatchSnapshot();
+});
+
+it('My Movie List Component renders correctly', () => {
+  const movies = [
+    {
+      poster_path: null,
+      userCreated: true,
+      title: 'TestMovie',
+      overview: 'Test overview',
+      release_date: '2020',
+      id: 1,
+    },
+  ];
+  const component = shallow(<MyMoviesList movies={movies} />);
+  expect(component).toMatchSnapshot();
+});
+
+it('Add movie modal renders correctly', () => {
+  const component = shallow(
+    <MoviesList
+      isVisible={true}
+      onClose={() => {
+        jest.fn();
+      }}
+      testID="fakeTestID"
+    />,
+  );
+  expect(component).toMatchSnapshot();
 });
